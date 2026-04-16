@@ -18,12 +18,15 @@ FILES_TO_COPY = [
     "Figure1/local_connection_prob.csv",
     "Figure2/Figure2_Simulation_WholeOT_L.ipynb",
     "Figure2/Figure2_Simulation_WholeOT_S.ipynb",
-    "Figure2/WholeOT_L_5ht.ipynb",
-    "Figure2/WholeOT_S_5HT.ipynb",
     "Figure2/Looming_Ex.xlsx",
     "Figure2/SD_Ex.xlsx",
     "Figure2/neuron_number.csv",
     "Figure2/neuron_connections_whole.csv",
+    "Figure2/neuron_connections_whole_ab.csv",
+    "Figure2/neuron_connections_whole_cri_L_test.csv",
+    "Figure2/neuron_connections_whole_cri_S_test.csv",
+    "Figure2/neuron_connections_whole_noncri_L.csv",
+    "Figure2/neuron_connections_whole_noncri_S.csv",
     "Figure2/accumulation/accumulation.py",
     "Figure2/accumulation/Looming.xlsx",
     "Figure2/accumulation/SD.xlsx",
@@ -33,14 +36,17 @@ FILES_TO_COPY = [
     "Figure2/accumulation/neuron_number.csv",
     "Figure2/accumulation/neuron_connections_whole.csv",
     "Figure3/F3_SNR_TIN_all.ipynb",
-    "Figure3/F3_SNR_TIN_all_5ht.ipynb",
     "Figure3/F3_lorenz_sequence.ipynb",
     "Figure3/compressed_weight_matrix.npy",
     "Figure3/dense_matrix.csv",
     "Figure3/neuron_connections_whole.csv",
     "Figure3/neuron_number.csv",
+    "Figure3/neuron_mapping.csv",
     "Figure3/single_neuron_connections.csv",
     "Figure3/single_neuron_weights.npz",
+    "Figure3/TIN_conn.csv",
+    "Figure3/TIN_number.csv",
+    "Figure3/TIN_weight.csv",
     "Figure3/NLooming0.xlsx",
     "Figure3/NLooming001.xlsx",
     "Figure3/NLooming005.xlsx",
@@ -55,12 +61,10 @@ FILES_TO_COPY = [
     "Figure3/NSD05.xlsx",
     "Figure4/F4_BD_Total.ipynb",
     "Figure4/F4_BD_remove.ipynb",
-    "Figure4/plot_bd16_calcium.py",
     "Figure4/BD_10.xlsx",
     "Figure4/BD_16.xlsx",
     "Figure4/neuron_number.csv",
     "Figure4/neuron_connections_whole.csv",
-    "S14/Fig_4S13d_five_point_data.csv",
 ]
 
 DIRS_TO_COPY = [
@@ -68,9 +72,6 @@ DIRS_TO_COPY = [
     "Figure1/SO_A_RGC",
     "Figure1/TPN-E",
     "Figure1/TPN-O",
-    "S14/_generated_s13d_five_point",
-    "S14/_generated_s13_s14",
-    "S14/_generated_s14_replicates",
 ]
 
 
@@ -86,6 +87,8 @@ def strip_notebook_outputs(path: Path) -> None:
 def copy_file(rel_path: str) -> None:
     src = ROOT / rel_path
     dst = BUNDLE_ROOT / rel_path
+    if not src.exists():
+        raise FileNotFoundError(f"Configured bundle input does not exist: {src}")
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dst)
     if dst.suffix == ".ipynb":
@@ -95,6 +98,8 @@ def copy_file(rel_path: str) -> None:
 def copy_dir(rel_path: str) -> None:
     src = ROOT / rel_path
     dst = BUNDLE_ROOT / rel_path
+    if not src.exists():
+        raise FileNotFoundError(f"Configured bundle directory does not exist: {src}")
     if dst.exists():
         shutil.rmtree(dst)
     shutil.copytree(src, dst)
@@ -108,16 +113,13 @@ def write_bundle_readme() -> None:
         "## Included figure workflows\n\n"
         "- Figure 1 pathway-bias demo\n"
         "- Figure 2 whole-OT looming and SMD simulations\n"
-        "- Figure 2 serotonergic variants\n"
         "- Figure 3 noisy-input and Lorenz benchmark workflows\n"
         "- Figure 4 BMD and ablation workflows\n\n"
-        "## Included supplementary artifacts\n\n"
-        "- Supplementary Figures 13-14 generated JSON/CSV snapshots that are already present in the current workspace\n\n"
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
-        "- The main notebooks were annotated with code-facing notes on input scaling, analysis-window offsets, and 5-HT threshold modulation.\n"
-        "- The current `S14` folder does not yet contain the original source scripts used to make every supplementary panel, so the bundle includes the available generated data snapshots rather than a full rebuild pipeline for those panels.\n"
-        "- Use `tools/notebook_smoke_runner.py` for quick non-Jupyter smoke tests.\n",
+        "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
+        "- Figure 3 includes the TIN-level connectivity, population-size, mapping, and dense/sparse matrix files used by the Lorenz benchmark.\n"
+        "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )
 
@@ -138,6 +140,12 @@ def write_gitignore() -> None:
 
 
 def main() -> None:
+    if ROOT.resolve() == BUNDLE_ROOT.resolve():
+        raise RuntimeError(
+            "Refusing to prepare a bundle in-place. Run this script from a separate source checkout, "
+            "or change BUNDLE_ROOT before running."
+        )
+
     if BUNDLE_ROOT.exists():
         shutil.rmtree(BUNDLE_ROOT)
     BUNDLE_ROOT.mkdir(parents=True, exist_ok=True)

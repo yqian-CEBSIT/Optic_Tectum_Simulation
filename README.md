@@ -11,10 +11,10 @@ This repository is organized around the main figure-level workflows. The code is
   - Includes the main notebook, local connection-probability table, and the curated morphology files used in the figure-level workflow.
 - `Figure2`
   - Whole-OT simulations for looming and small-moving-dot (SMD) conditions.
-  - Includes the main notebooks, input calcium-derived tables, network connectivity tables, and the cumulative-ablation utility in `Figure2/accumulation/`.
+  - Includes the main notebooks, input calcium-derived tables, baseline and ablation connectivity tables, and the cumulative-ablation utility in `Figure2/accumulation/`.
 - `Figure3`
   - Robustness analyses under noisy inputs and the Lorenz-sequence reservoir benchmark.
-  - Includes the main noisy-input notebook, the Lorenz notebook, connectivity tables, and matrix files used by the reservoir analyses.
+  - Includes the main noisy-input notebook, the Lorenz notebook, TIN connectivity tables, neuron mappings, and matrix files used by the reservoir analyses.
 - `Figure4`
   - Big-moving-dot (BMD) simulations and in silico ablation analyses.
   - Includes the main BMD notebooks plus the input and connectivity tables used by those analyses.
@@ -51,7 +51,10 @@ This repository is organized around the main figure-level workflows. The code is
   - synaptic weights `+0.6` for excitatory projections and `-6.7` for inhibitory projections
   - synaptic decay constants of `5 ms` for excitation and `10 ms` for inhibition
 - In serotonergic simulation conditions, modulation is implemented as discrete threshold lowering in selected neuron subsets.
+- Noisy-input SNR analyses keep the manuscript-facing windows explicit: `slice(0, 1500)` for the 15 s baseline and `slice(1500, 3000)` for the 15-30 s stimulus response in 10 ms display-bin units. A 2 s calcium-response lead is corrected on the input timeline before interpolation rather than by shifting the AUC window.
 - Notebook outputs were kept lightweight to make the repository easier to browse and upload.
+- The curated repository includes the literal file inputs referenced by the public notebooks. The cumulative-ablation script also accepts command-line paths for alternative inputs.
+- Full BrainPy simulation cells can take several minutes on a CPU-only workstation. The helper below is intended for selected-cell checks rather than a complete rebuild of every notebook.
 
 ## Quick start
 
@@ -69,9 +72,9 @@ Example smoke tests:
 python .\tools\notebook_smoke_runner.py `
   --notebook .\Figure2\Figure2_Simulation_WholeOT_L.ipynb `
   --cells 1,2,6 `
-  --summary acc=acc `
-  --summary tpn_e_auc=rate1[analysis_slice].sum() `
-  --summary tpn_o_auc=rate2[analysis_slice].sum() `
+  --summary 'acc=acc' `
+  --summary 'tpn_e_auc=rate1[analysis_slice].sum()' `
+  --summary 'tpn_o_auc=rate2[analysis_slice].sum()' `
   --quiet
 ```
 
@@ -79,9 +82,9 @@ python .\tools\notebook_smoke_runner.py `
 python .\tools\notebook_smoke_runner.py `
   --notebook .\Figure2\Figure2_Simulation_WholeOT_S.ipynb `
   --cells 1,2,4 `
-  --summary acc=acc `
-  --summary tpn_e_auc=rate1[analysis_slice].sum() `
-  --summary tpn_o_auc=rate2[analysis_slice].sum() `
+  --summary 'acc=acc' `
+  --summary 'tpn_e_auc=rate1[analysis_slice].sum()' `
+  --summary 'tpn_o_auc=rate2[analysis_slice].sum()' `
   --quiet
 ```
 

@@ -41,7 +41,8 @@ NOTEBOOK_NOTES = {
         "# Notebook notes",
         "",
         "- The noisy-input SNN uses the same global gain coefficient `65` and channel gains `(1, 1, 1, 3, 3, 1)` as the main whole-OT model.",
-        "- The noisy-input traces are stimulus-locked calcium tables. If calcium responses are shifted relative to stimulus onset, update the offset variables rather than rewriting the nominal 15 s window.",
+        "- Noisy-input SNR uses the manuscript-aligned 15 s baseline window and 15-30 s stimulus window; in 10 ms display bins these are `slice(0, 1500)` and `slice(1500, 3000)`.",
+        "- A 2 s calcium-response lead is corrected on the input timeline before interpolation, so AUC quantification remains aligned to the nominal stimulus window.",
     ],
     "Figure3/F3_SNR_TIN_all_5ht.ipynb": [
         "# Notebook notes",
@@ -99,15 +100,20 @@ WINDOW_SETUP = (
 )
 
 NOISY_WINDOW_SETUP = (
-    "signal_window_nominal_start_ms = 15000\n"
-    "signal_window_duration_ms = 15000\n"
-    "signal_offset_ms = -2000  # negative values shift the response window earlier for calcium timing offsets\n"
-    "signal_start_idx = int((signal_window_nominal_start_ms + signal_offset_ms) / dt_sim)\n"
-    "signal_end_idx = signal_start_idx + int(signal_window_duration_ms / dt_sim)\n"
-    "signal_slice = slice(signal_start_idx, signal_end_idx)\n"
-    "baseline_end_idx = signal_start_idx\n"
-    "baseline_start_idx = max(0, baseline_end_idx - int(signal_window_duration_ms / dt_sim))\n"
-    "baseline_slice = slice(baseline_start_idx, baseline_end_idx)\n"
+    "# Manuscript-aligned AUC windows.\n"
+    "# Display-bin slices make the intended windows explicit to readers: 0-15 s and 15-30 s.\n"
+    "display_bin_ms = 10\n"
+    "display_bin_steps = int(display_bin_ms / dt_sim)\n"
+    "baseline_window_nominal_slice = slice(0, 1500)\n"
+    "signal_window_nominal_slice = slice(1500, 3000)\n"
+    "baseline_slice = slice(\n"
+    "    baseline_window_nominal_slice.start * display_bin_steps,\n"
+    "    baseline_window_nominal_slice.stop * display_bin_steps,\n"
+    ")\n"
+    "signal_slice = slice(\n"
+    "    signal_window_nominal_slice.start * display_bin_steps,\n"
+    "    signal_window_nominal_slice.stop * display_bin_steps,\n"
+    ")\n"
 )
 
 
@@ -153,17 +159,22 @@ def update_source(code: str, notebook_key: str) -> str:
         code = code.replace("rate2[300000:450000].sum()", "rate2[analysis_slice].sum()")
 
     if notebook_key.startswith("Figure3/F3_SNR_TIN_all"):
-        if "signal_window_nominal_start_ms = 15000" not in code and "rate1[130000:,].sum()" in code:
+        if "calcium_response_lead_ms = 2000" not in code and "data_times_ms = time_points * 1000" in code:
+            code = code.replace(
+                "    data_times_ms = time_points * 1000\n",
+                "    # Align calcium responses to the manuscript's nominal stimulus timeline.\n"
+                "    # The raw calcium response leads the nominal stimulus epoch by 2 s.\n"
+                "    calcium_response_lead_ms = 2000\n"
+                "    data_times_ms = time_points * 1000 + calcium_response_lead_ms\n",
+            )
+
+        if "signal_window_nominal_slice = slice(1500, 3000)" not in code and "rate1[signal_slice].sum()" in code:
             code = code.replace(
                 "rate1 = bp.measure.firing_rate(tpn_e_spike, width=1000.)\nrate2 = bp.measure.firing_rate(tpn_o_spike, width=1000.)\n\nprint(",
                 "rate1 = bp.measure.firing_rate(tpn_e_spike, width=1000.)\nrate2 = bp.measure.firing_rate(tpn_o_spike, width=1000.)\n\n"
                 + NOISY_WINDOW_SETUP
                 + "\nprint(",
             )
-        code = code.replace("rate1[130000:,].sum()", "rate1[signal_slice].sum()")
-        code = code.replace("rate1[:130000].sum()", "rate1[baseline_slice].sum()")
-        code = code.replace("rate2[130000:,].sum()", "rate2[signal_slice].sum()")
-        code = code.replace("rate2[:130000].sum()", "rate2[baseline_slice].sum()")
 
     return code
 
