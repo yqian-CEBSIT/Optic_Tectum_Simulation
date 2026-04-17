@@ -4,5 +4,6 @@ __pycache__/
 *.pdf
 *.png
 *.svg
+*.swc
 *_exec_*.ipynb
 *.log

@@ -10,55 +10,35 @@ ROOT = Path(__file__).resolve().parents[1]
 
 NOTEBOOK_NOTES = {
     "Figure2/Figure2_Simulation_WholeOT_L.ipynb": [
-        "# Notebook notes",
+        "# Figure 2 - Accuracy",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65`.",
         "- The six RGC input channels are scaled by `(1, 1, 1, 3, 3, 1)` for `RGC_SO`, `RGC_S12`, `RGC_S34`, `RGC_S56`, `RGC_SGC`, and `RGC_SAC`, respectively.",
         "- The 15 s analysis window is kept explicit in code, and a separate offset variable can be adjusted if calcium responses are shifted relative to nominal stimulus onset.",
     ],
     "Figure2/Figure2_Simulation_WholeOT_S.ipynb": [
-        "# Notebook notes",
+        "# Figure 2 - Accuracy",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65`.",
         "- The six RGC input channels are scaled by `(1, 1, 1, 3, 3, 1)` for `RGC_SO`, `RGC_S12`, `RGC_S34`, `RGC_S56`, `RGC_SGC`, and `RGC_SAC`, respectively.",
         "- The 15 s analysis window is kept explicit in code, and a separate offset variable can be adjusted if calcium responses are shifted relative to nominal stimulus onset.",
     ],
-    "Figure2/WholeOT_L_5ht.ipynb": [
-        "# Notebook notes",
-        "",
-        "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
-        "- Serotonergic modulation is implemented as discrete threshold lowering in selected neuron subsets rather than a continuous change in recurrent connectivity.",
-        "- In the DL_5-HT / looming-biased condition, the baseline threshold `-50 mV` is lowered to `-52`, `-55`, or `-59 mV` depending on the targeted neuron subset.",
-    ],
-    "Figure2/WholeOT_S_5HT.ipynb": [
-        "# Notebook notes",
-        "",
-        "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
-        "- Serotonergic modulation is implemented as discrete threshold lowering in selected neuron subsets rather than a continuous change in recurrent connectivity.",
-        "- In the SL_5-HT / orienting-biased condition, the baseline threshold `-50 mV` is lowered to `-52`, `-55`, or `-58 mV` depending on the targeted neuron subset.",
-    ],
     "Figure3/F3_SNR_TIN_all.ipynb": [
-        "# Notebook notes",
+        "# Figure 3 - Robustness",
         "",
         "- The noisy-input SNN uses the same global gain coefficient `65` and channel gains `(1, 1, 1, 3, 3, 1)` as the main whole-OT model.",
         "- Noisy-input SNR uses the manuscript-aligned 15 s baseline window and 15-30 s stimulus window; in 10 ms display bins these are `slice(0, 1500)` and `slice(1500, 3000)`.",
         "- A 2 s calcium-response lead is corrected on the input timeline before interpolation, so AUC quantification remains aligned to the nominal stimulus window.",
     ],
-    "Figure3/F3_SNR_TIN_all_5ht.ipynb": [
-        "# Notebook notes",
-        "",
-        "- The noisy-input SNN uses the same global gain coefficient `65` and channel gains `(1, 1, 1, 3, 3, 1)` as the main whole-OT model.",
-        "- Serotonergic modulation is implemented as discrete threshold lowering in selected neuron subsets.",
-    ],
     "Figure4/F4_BD_Total.ipynb": [
-        "# Notebook notes",
+        "# Figure 4 - Flexibility",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
         "- The 15 s analysis window is represented with explicit duration and offset variables in code.",
         "- In the 5-HT bias simulations, baseline threshold `-50 mV` is lowered to `-52`, `-55`, `-58`, or `-59 mV` depending on the modeled condition and neuron subset.",
     ],
     "Figure4/F4_BD_remove.ipynb": [
-        "# Notebook notes",
+        "# Figure 4 - Flexibility",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
         "- The ablation analyses should keep a fixed 15 s output window and represent calcium timing shifts with an explicit offset variable.",
@@ -130,7 +110,8 @@ def ensure_note_cell(notebook: dict, lines: list[str]) -> None:
     for cell in notebook["cells"]:
         if cell.get("cell_type") == "markdown":
             source = "".join(cell.get("source", []))
-            if marker in source:
+            if marker in source or source.startswith("# Notebook notes"):
+                cell["source"] = [line + "\n" for line in lines[:-1]] + [lines[-1]]
                 return
     notebook["cells"].insert(
         0,
@@ -144,6 +125,8 @@ def ensure_note_cell(notebook: dict, lines: list[str]) -> None:
 
 def update_source(code: str, notebook_key: str) -> str:
     code = INPUT_SCALE_BLOCK_RE.sub(INPUT_SCALE_REPLACEMENT, code)
+    code = re.sub(r"sim_duration\s*=\s*60000[^\n]*", "sim_duration = 60000  # simulation duration: 60 s (ms)", code)
+    code = re.sub(r"sim_duration\s*=\s*30000[^\n]*", "sim_duration = 30000  # simulation duration: 30 s (ms)", code)
 
     if notebook_key.startswith("Figure2/Figure2_Simulation_WholeOT_") or notebook_key.startswith("Figure4/"):
         if "analysis_window_start_ms = 30000" not in code and "rate1[300000:450000" in code:
@@ -181,6 +164,9 @@ def update_source(code: str, notebook_key: str) -> str:
 
 def annotate_notebook(notebook_key: str) -> None:
     path = ROOT / notebook_key
+    if not path.exists():
+        print(f"Skipping missing notebook {path}")
+        return
     notebook = load_notebook(path)
     ensure_note_cell(notebook, NOTEBOOK_NOTES[notebook_key])
 

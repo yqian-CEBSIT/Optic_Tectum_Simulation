@@ -36,17 +36,8 @@ FILES_TO_COPY = [
     "Figure2/accumulation/neuron_number.csv",
     "Figure2/accumulation/neuron_connections_whole.csv",
     "Figure3/F3_SNR_TIN_all.ipynb",
-    "Figure3/F3_lorenz_sequence.ipynb",
-    "Figure3/compressed_weight_matrix.npy",
-    "Figure3/dense_matrix.csv",
     "Figure3/neuron_connections_whole.csv",
     "Figure3/neuron_number.csv",
-    "Figure3/neuron_mapping.csv",
-    "Figure3/single_neuron_connections.csv",
-    "Figure3/single_neuron_weights.npz",
-    "Figure3/TIN_conn.csv",
-    "Figure3/TIN_number.csv",
-    "Figure3/TIN_weight.csv",
     "Figure3/NLooming0.xlsx",
     "Figure3/NLooming001.xlsx",
     "Figure3/NLooming005.xlsx",
@@ -67,12 +58,7 @@ FILES_TO_COPY = [
     "Figure4/neuron_connections_whole.csv",
 ]
 
-DIRS_TO_COPY = [
-    "Figure1/SGC_SAC_P_RGC",
-    "Figure1/SO_A_RGC",
-    "Figure1/TPN-E",
-    "Figure1/TPN-O",
-]
+DIRS_TO_COPY: list[str] = []
 
 
 def strip_notebook_outputs(path: Path) -> None:
@@ -98,8 +84,6 @@ def copy_file(rel_path: str) -> None:
 def copy_dir(rel_path: str) -> None:
     src = ROOT / rel_path
     dst = BUNDLE_ROOT / rel_path
-    if not src.exists():
-        raise FileNotFoundError(f"Configured bundle directory does not exist: {src}")
     if dst.exists():
         shutil.rmtree(dst)
     shutil.copytree(src, dst)
@@ -112,13 +96,14 @@ def write_bundle_readme() -> None:
         "This bundle contains the curated notebooks, scripts, and input data that are most directly connected to the manuscript figures.\n\n"
         "## Included figure workflows\n\n"
         "- Figure 1 pathway-bias demo\n"
-        "- Figure 2 whole-OT looming and SMD simulations\n"
-        "- Figure 3 noisy-input and Lorenz benchmark workflows\n"
-        "- Figure 4 BMD and ablation workflows\n\n"
+        "- Figure 2 accuracy workflows\n"
+        "- Figure 3 robustness workflows\n"
+        "- Figure 4 flexibility workflows\n\n"
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
+        "- Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.\n"
         "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
-        "- Figure 3 includes the TIN-level connectivity, population-size, mapping, and dense/sparse matrix files used by the Lorenz benchmark.\n"
+        "- Figure 3 includes the calcium-derived noisy-input tables and whole-OT connectivity table used by the robustness analyses.\n"
         "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )
@@ -133,6 +118,7 @@ def write_gitignore() -> None:
         "*.pdf\n"
         "*.png\n"
         "*.svg\n"
+        "*.swc\n"
         "*_exec_*.ipynb\n"
         "*.log\n",
         encoding="utf-8",
