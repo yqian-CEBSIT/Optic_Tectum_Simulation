@@ -11,7 +11,7 @@ This folder is a curated public-facing bundle derived from the local working dir
 - `Figure3`
   - **Robustness**: noisy-input analyses with calcium-derived noisy-input tables and whole-OT connectivity tables.
 - `Figure4`
-  - **Flexibility**: BMD simulations and ablation analyses.
+  - **Flexibility**: 10-degree BMD simulations and ablation analyses; `BD_16.xlsx` is retained as an alternative larger-BMD input.
 - `tools`
   - Helper scripts for smoke testing and bundle preparation.
 
@@ -20,5 +20,5 @@ This folder is a curated public-facing bundle derived from the local working dir
 - Only the files currently present in this bundle are intended for upload.
 - Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.
 - Notebook outputs were kept lightweight to make the repository easier to browse and upload.
-- The main notebooks include code-facing notes on input scaling, manuscript-aligned analysis windows, calcium timing offsets, and serotonergic threshold modulation.
+- The main notebooks include code-facing notes on input scaling, manuscript-aligned analysis windows, calcium timing offsets, serotonergic threshold modulation, and the Figure 4 preference-index sign convention.
 - Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests. Full BrainPy simulation cells can take several minutes on CPU-only machines.

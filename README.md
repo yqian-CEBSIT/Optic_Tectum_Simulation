@@ -17,7 +17,7 @@ This repository is organized around the main figure-level workflows. The code is
   - Includes the main noisy-input notebook, calcium-derived noisy-input tables, and the whole-OT connectivity table used by the robustness analyses.
 - `Figure4`
   - **Flexibility**: big-moving-dot (BMD) simulations and in silico ablation analyses.
-  - Includes the main BMD notebooks plus the input and connectivity tables used by those analyses.
+  - Includes the main 10-degree BMD notebooks plus the input and connectivity tables used by those analyses. `BD_16.xlsx` is retained as an alternative larger-BMD input for supplementary checks.
 - `tools`
   - Helper utilities for quick smoke tests and repo preparation.
 
@@ -49,9 +49,12 @@ This repository is organized around the main figure-level workflows. The code is
   - synaptic weights `+0.6` for excitatory projections and `-6.7` for inhibitory projections
   - synaptic decay constants of `5 ms` for excitation and `10 ms` for inhibition
 - In serotonergic simulation conditions, modulation is implemented as discrete threshold lowering in selected neuron subsets.
+- Figure 4 preference index follows the manuscript sign convention: `(TPN-E AUC - TPN-O AUC) / (TPN-E AUC + TPN-O AUC)`, so positive values indicate escape bias.
+- Figure 4 notebooks default to `BD_10.xlsx`, matching the main-text 10-degree BMD stimulus. `BD_16.xlsx` remains available as an alternative larger-BMD input.
 - Noisy-input SNR analyses keep the manuscript-facing windows explicit: `slice(0, 1500)` for the 15 s baseline and `slice(1500, 3000)` for the 15-30 s stimulus response in 10 ms display-bin units. A 2 s calcium-response lead is corrected on the input timeline before interpolation rather than by shifting the AUC window.
 - Notebook outputs were kept lightweight to make the repository easier to browse and upload.
 - The curated repository includes the literal file inputs referenced by the public notebooks. The cumulative-ablation script also accepts command-line paths for alternative inputs.
+- The Figure 2 cumulative-ablation utility replays supplied `*_Order.csv` sequences on cropped 25 s inputs with a 5-20 s analysis window; the main whole-OT notebooks use the 30-45 s response window in 60 s simulations.
 - Raw `.swc` morphology files and manuscript-unrelated benchmark code are excluded from this public code bundle.
 - Full BrainPy simulation cells can take several minutes on a CPU-only workstation. The helper below is intended for selected-cell checks rather than a complete rebuild of every notebook.
 

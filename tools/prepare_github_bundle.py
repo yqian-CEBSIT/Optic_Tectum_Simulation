@@ -98,12 +98,13 @@ def write_bundle_readme() -> None:
         "- Figure 1 pathway-bias demo\n"
         "- Figure 2 accuracy workflows\n"
         "- Figure 3 robustness workflows\n"
-        "- Figure 4 flexibility workflows\n\n"
+        "- Figure 4 flexibility workflows, defaulting to the 10-degree BMD input\n\n"
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
         "- Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.\n"
         "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
         "- Figure 3 includes the calcium-derived noisy-input tables and whole-OT connectivity table used by the robustness analyses.\n"
+        "- Figure 4 uses the manuscript sign convention for preference index: TPN-E AUC minus TPN-O AUC over their sum.\n"
         "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )

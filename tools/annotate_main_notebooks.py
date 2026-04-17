@@ -34,14 +34,18 @@ NOTEBOOK_NOTES = {
         "# Figure 4 - Flexibility",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
+        "- The public main-figure workflow defaults to `BD_10.xlsx`, matching the 10-degree BMD stimulus described for Figure 4; `BD_16.xlsx` is retained as an alternative larger-BMD input.",
         "- The 15 s analysis window is represented with explicit duration and offset variables in code.",
+        "- Preference index follows the manuscript sign convention: `(TPN-E AUC - TPN-O AUC) / (TPN-E AUC + TPN-O AUC)`, so positive values indicate escape bias.",
         "- In the 5-HT bias simulations, baseline threshold `-50 mV` is lowered to `-52`, `-55`, `-58`, or `-59 mV` depending on the modeled condition and neuron subset.",
     ],
     "Figure4/F4_BD_remove.ipynb": [
         "# Figure 4 - Flexibility",
         "",
         "- Final whole-OT input scaling uses a global gain coefficient of `65` with channel gains `(1, 1, 1, 3, 3, 1)`.",
+        "- The public ablation workflow defaults to `BD_10.xlsx`, matching the 10-degree BMD stimulus described for Figure 4; `BD_16.xlsx` is retained as an alternative larger-BMD input.",
         "- The ablation analyses should keep a fixed 15 s output window and represent calcium timing shifts with an explicit offset variable.",
+        "- Preference index follows the manuscript sign convention: `(TPN-E AUC - TPN-O AUC) / (TPN-E AUC + TPN-O AUC)`, so positive values indicate escape bias.",
     ],
 }
 
@@ -96,6 +100,25 @@ NOISY_WINDOW_SETUP = (
     ")\n"
 )
 
+FIGURE4_PREFERENCE_OLD = (
+    "acc = (rate2[analysis_slice].sum()-rate1[analysis_slice].sum())/(rate2[analysis_slice].sum()+rate1[analysis_slice].sum())\n"
+    "rate1[analysis_slice].sum(), rate2[analysis_slice].sum(), acc.sum()"
+)
+
+FIGURE4_PREFERENCE_NEW = (
+    "tpn_e_auc = rate1[analysis_slice].sum()\n"
+    "tpn_o_auc = rate2[analysis_slice].sum()\n"
+    "preference_index = (tpn_e_auc - tpn_o_auc) / (tpn_e_auc + tpn_o_auc)\n"
+    "acc = preference_index  # compatibility alias for earlier notebook summaries\n"
+    "tpn_e_auc, tpn_o_auc, preference_index.sum()"
+)
+
+STALE_COMMENT_LINES = (
+    "# \u8bfb\u53d6\u635f\u6bc1\u987a\u5e8f\u7684CSV\u6587\u4ef6\n",
+    "# NLooming_order = pd.read_csv('./NoisyLooming_Order_test.csv')  # \u5047\u8bbe\u6587\u4ef6\u540d\u4e3adamage_order.csv\n",
+    "# NLooming_shuffle_sequence = NLooming_order.iloc[:, 0].tolist()  # \u63d0\u53d6\u7b2c\u4e00\u5217\u4f5c\u4e3a\u635f\u6bc1\u987a\u5e8f\n",
+)
+
 
 def load_notebook(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -127,6 +150,14 @@ def update_source(code: str, notebook_key: str) -> str:
     code = INPUT_SCALE_BLOCK_RE.sub(INPUT_SCALE_REPLACEMENT, code)
     code = re.sub(r"sim_duration\s*=\s*60000[^\n]*", "sim_duration = 60000  # simulation duration: 60 s (ms)", code)
     code = re.sub(r"sim_duration\s*=\s*30000[^\n]*", "sim_duration = 30000  # simulation duration: 30 s (ms)", code)
+    code = re.sub(
+        r"(conn_prob_df = pd\.read_csv\('[^']+', index_col=0\))\s+## neuron_connections_whole neuron_connections_TIN_ablation\.csv",
+        r"\1",
+        code,
+    )
+    code = code.replace("sim_times = np.arange(0, sim_duration, dt_sim)  # \u6beb\u79d2\u5355\u4f4d", "sim_times = np.arange(0, sim_duration, dt_sim)  # ms")
+    for stale_line in STALE_COMMENT_LINES:
+        code = code.replace(stale_line, "")
 
     if notebook_key.startswith("Figure2/Figure2_Simulation_WholeOT_") or notebook_key.startswith("Figure4/"):
         if "analysis_window_start_ms = 30000" not in code and "rate1[300000:450000" in code:
@@ -140,6 +171,10 @@ def update_source(code: str, notebook_key: str) -> str:
         code = code.replace("rate2[300000:450000,].sum()", "rate2[analysis_slice].sum()")
         code = code.replace("rate1[300000:450000].sum()", "rate1[analysis_slice].sum()")
         code = code.replace("rate2[300000:450000].sum()", "rate2[analysis_slice].sum()")
+
+    if notebook_key.startswith("Figure4/"):
+        code = code.replace("data = pd.read_excel('BD_16.xlsx', header=0, sheet_name='Sheet1')", "data = pd.read_excel('BD_10.xlsx', header=0, sheet_name='Sheet1')")
+        code = code.replace(FIGURE4_PREFERENCE_OLD, FIGURE4_PREFERENCE_NEW)
 
     if notebook_key.startswith("Figure3/F3_SNR_TIN_all"):
         if "calcium_response_lead_ms = 2000" not in code and "data_times_ms = time_points * 1000" in code:
