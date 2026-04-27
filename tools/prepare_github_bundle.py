@@ -11,8 +11,11 @@ BUNDLE_ROOT = ROOT.parent / "Project_code_github_ready"
 FILES_TO_COPY = [
     "requirements.txt",
     "README.md",
+    "README_GITHUB_BUNDLE.md",
+    "MANUSCRIPT_PANEL_MAP.md",
     "tools/notebook_smoke_runner.py",
     "tools/annotate_main_notebooks.py",
+    "tools/generate_manuscript_assets.py",
     "tools/prepare_github_bundle.py",
     "Figure1/Figure1_TwoPathway.ipynb",
     "Figure1/local_connection_prob.csv",
@@ -52,10 +55,12 @@ FILES_TO_COPY = [
     "Figure3/NSD05.xlsx",
     "Figure4/F4_BD_Total.ipynb",
     "Figure4/F4_BD_remove.ipynb",
+    "Figure4/figure4_bmd_replay.py",
     "Figure4/BD_10.xlsx",
     "Figure4/BD_16.xlsx",
     "Figure4/neuron_number.csv",
     "Figure4/neuron_connections_whole.csv",
+    "Figure4/serotonergic_connections.csv",
 ]
 
 DIRS_TO_COPY: list[str] = []
@@ -102,9 +107,11 @@ def write_bundle_readme() -> None:
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
         "- Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.\n"
+        "- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to public code/data files.\n"
         "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
         "- Figure 3 includes the calcium-derived noisy-input tables and whole-OT connectivity table used by the robustness analyses.\n"
         "- Figure 4 uses the manuscript sign convention for preference index: TPN-E AUC minus TPN-O AUC over their sum.\n"
+        "- `Figure4/figure4_bmd_replay.py` implements the manuscript Table S3 threshold-modulation formula.\n"
         "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )

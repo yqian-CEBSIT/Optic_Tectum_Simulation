@@ -35,6 +35,7 @@ class SimulationConfig:
     order_path: Path
     output_path: Path
     target_pathway: str
+    data_sheet: str = "Sheet1"
     dt_sim_ms: float = 0.1
     sim_duration_ms: float = 25_000.0
     analysis_start_ms: float = 5_000.0
@@ -89,7 +90,7 @@ def infer_target_pathway(data_path: Path, explicit_target: str | None) -> str:
 
 
 def load_channel_inputs(config: SimulationConfig) -> tuple[np.ndarray, tuple[bm.Array, ...]]:
-    data = pd.read_excel(config.data_path, sheet_name="Sheet1")
+    data = pd.read_excel(config.data_path, sheet_name=config.data_sheet)
     time_points = data["Time"].to_numpy(dtype=float)
     calcium_signals = data.iloc[:, 1:7].to_numpy(dtype=float)
     dt_data = float(np.median(np.diff(time_points)))
@@ -148,6 +149,7 @@ class WholeOT(bp.DynSysGroup):
         neuron_numbers: dict[str, int],
         conn_matrix: np.ndarray,
         config: SimulationConfig,
+        threshold_overrides: dict[str, float] | None = None,
         method: str = "exp_auto",
     ):
         super().__init__()
@@ -165,9 +167,13 @@ class WholeOT(bp.DynSysGroup):
         self.neurons: dict[str, bp.DynamicalSystem] = {}
         self.synapses: dict[str, Exponential] = {}
         neuron_type_list = list(neuron_types)
+        threshold_overrides = threshold_overrides or {}
 
         for neuron_type in neuron_type_list:
-            neuron_group = bp.dyn.LifRef(int(neuron_numbers[neuron_type]), **pars)
+            neuron_pars = dict(pars)
+            if neuron_type in threshold_overrides:
+                neuron_pars["V_th"] = float(threshold_overrides[neuron_type])
+            neuron_group = bp.dyn.LifRef(int(neuron_numbers[neuron_type]), **neuron_pars)
             setattr(self, neuron_type, neuron_group)
             self.neurons[neuron_type] = neuron_group
 
@@ -229,9 +235,16 @@ def run_single_ablation(
     conn_matrix: np.ndarray,
     channel_inputs: tuple[bm.Array, ...],
     config: SimulationConfig,
+    threshold_overrides: dict[str, float] | None = None,
 ) -> dict[str, float]:
     clear_name_cache()
-    net = WholeOT(neuron_types=neuron_types, neuron_numbers=neuron_numbers, conn_matrix=conn_matrix, config=config)
+    net = WholeOT(
+        neuron_types=neuron_types,
+        neuron_numbers=neuron_numbers,
+        conn_matrix=conn_matrix,
+        config=config,
+        threshold_overrides=threshold_overrides,
+    )
 
     def run_net(t: bm.Array, inp1: bm.Array, inp2: bm.Array, inp3: bm.Array, inp4: bm.Array, inp5: bm.Array, inp6: bm.Array):
         bp.share.save(t=t)
@@ -251,6 +264,10 @@ def run_cumulative_ablation(config: SimulationConfig) -> pd.DataFrame:
     conn_matrix = pd.read_csv(config.connection_path, index_col=0).to_numpy(dtype=float).round(3)
     order_df = pd.read_csv(config.order_path)
     ablation_sequence = [value for value in order_df.iloc[:, 0].astype(str).tolist() if value and value.lower() != "nan"]
+    unknown_types = [value for value in ablation_sequence if value not in base_neuron_numbers]
+    if unknown_types:
+        unknown = ", ".join(unknown_types)
+        raise ValueError(f"Ablation order contains neuron types absent from {config.neuron_count_path}: {unknown}")
 
     if config.seed is not None:
         np.random.seed(config.seed)
@@ -261,8 +278,7 @@ def run_cumulative_ablation(config: SimulationConfig) -> pd.DataFrame:
     rows: list[dict[str, float | int | str]] = []
 
     for step, target_type in enumerate(ablation_sequence, start=1):
-        if target_type in active_neuron_numbers:
-            active_neuron_numbers[target_type] = 0
+        active_neuron_numbers[target_type] = 0
 
         metrics = run_single_ablation(
             neuron_types=neuron_types,
@@ -289,20 +305,21 @@ def run_cumulative_ablation(config: SimulationConfig) -> pd.DataFrame:
 def parse_args() -> SimulationConfig:
     root = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(
-        description="Run the legacy cumulative-ablation workflow with relative paths and explicit parameters."
+        description="Run the Figure 2 cumulative-ablation workflow with manuscript-aligned neuron types."
     )
     parser.add_argument("--data", type=Path, default=root / "SD.xlsx", help="Calcium-input Excel file.")
+    parser.add_argument("--data-sheet", default="Sheet1", help="Excel sheet containing Time and six RGC channels.")
     parser.add_argument("--order", type=Path, default=root / "SD_Order.csv", help="CSV file with cumulative ablation order.")
     parser.add_argument(
         "--counts",
         type=Path,
-        default=root / "neuron_number.csv",
+        default=root.parent / "neuron_number.csv",
         help="CSV file with neuron counts.",
     )
     parser.add_argument(
         "--connections",
         type=Path,
-        default=root / "neuron_connections_whole.csv",
+        default=root.parent / "neuron_connections_whole.csv",
         help="CSV file with connection probabilities.",
     )
     parser.add_argument(
@@ -352,6 +369,7 @@ def parse_args() -> SimulationConfig:
         order_path=args.order.resolve(),
         output_path=output_path,
         target_pathway=infer_target_pathway(data_path, args.target_pathway),
+        data_sheet=args.data_sheet,
         dt_sim_ms=args.dt_sim_ms,
         sim_duration_ms=args.sim_duration_ms,
         analysis_start_ms=args.analysis_start_ms,

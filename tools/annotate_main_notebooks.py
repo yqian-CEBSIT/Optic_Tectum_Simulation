@@ -37,7 +37,7 @@ NOTEBOOK_NOTES = {
         "- The public main-figure workflow defaults to `BD_10.xlsx`, matching the 10-degree BMD stimulus described for Figure 4; `BD_16.xlsx` is retained as an alternative larger-BMD input.",
         "- The 15 s analysis window is represented with explicit duration and offset variables in code.",
         "- Preference index follows the manuscript sign convention: `(TPN-E AUC - TPN-O AUC) / (TPN-E AUC + TPN-O AUC)`, so positive values indicate escape bias.",
-        "- In the 5-HT bias simulations, baseline threshold `-50 mV` is lowered to `-52`, `-55`, `-58`, or `-59 mV` depending on the modeled condition and neuron subset.",
+        "- For STAR Methods-aligned serotonergic modulation, use `figure4_bmd_replay.py`, which reads `serotonergic_connections.csv` and applies `Vth_i(5HT) = Vth_i - gamma * p_i`.",
     ],
     "Figure4/F4_BD_remove.ipynb": [
         "# Figure 4 - Flexibility",
@@ -46,6 +46,7 @@ NOTEBOOK_NOTES = {
         "- The public ablation workflow defaults to `BD_10.xlsx`, matching the 10-degree BMD stimulus described for Figure 4; `BD_16.xlsx` is retained as an alternative larger-BMD input.",
         "- The ablation analyses should keep a fixed 15 s output window and represent calcium timing shifts with an explicit offset variable.",
         "- Preference index follows the manuscript sign convention: `(TPN-E AUC - TPN-O AUC) / (TPN-E AUC + TPN-O AUC)`, so positive values indicate escape bias.",
+        "- For STAR Methods-aligned serotonergic modulation, use `figure4_bmd_replay.py`, which reads `serotonergic_connections.csv` and applies `Vth_i(5HT) = Vth_i - gamma * p_i`.",
     ],
 }
 
