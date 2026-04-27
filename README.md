@@ -15,13 +15,17 @@ This repository is organized around the main figure-level workflows. The code is
 - `Figure3`
   - **Robustness**: noisy-input analyses for looming- and SMD-driven visuomotor transformations.
   - Includes the main noisy-input notebook, calcium-derived noisy-input tables, and the whole-OT connectivity table used by the robustness analyses.
+  - `Figure3/results/` stores generated replay output tables.
 - `Figure4`
   - **Flexibility**: big-moving-dot (BMD) simulations and in silico ablation analyses.
   - Includes the main 10-degree BMD notebooks plus the input and connectivity tables used by those analyses. `BD_16.xlsx` is retained as an alternative larger-BMD input for supplementary checks.
 - `Figure5`
   - **Model follow-up for Figure 5**: scripted replay for related-stimulus accuracy, noise-robustness boosts, and the graded BMD bias workflow.
+  - `Figure5/results/` stores generated replay output tables.
 - `tools`
   - Helper utilities for quick smoke tests and repo preparation.
+  - `tools/run_default_replays.py` runs the default Figure 3 and Figure 5 scripted replay suite and writes example output tables into `Figure3/results/` and `Figure5/results/`.
+  - `tools/run_release_examples.py` runs a checked release-output suite with deterministic seeds and writes a compact set of example tables into the same results folders.
 
 ## Recommended entry points
 
@@ -128,6 +132,18 @@ python Figure5/figure5_model_replay.py --analysis related_accuracy
 python Figure5/figure5_model_replay.py --analysis noise_boost --modality looming
 python Figure5/figure5_model_replay.py --analysis noise_boost --modality smd
 python Figure5/figure5_model_replay.py --analysis proxy_bias_curve
+```
+
+Default long-run replay suite:
+
+```bash
+python tools/run_default_replays.py
+```
+
+Release output suite:
+
+```bash
+python tools/run_release_examples.py
 ```
 
 ```powershell

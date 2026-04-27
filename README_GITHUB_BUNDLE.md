@@ -16,6 +16,8 @@ This folder is a curated public-facing bundle derived from the local working dir
   - **Model follow-up**: scripted replay for the simulation-supported Figure 5 panels.
 - `tools`
   - Helper scripts for smoke testing and bundle preparation.
+  - `tools/run_default_replays.py` writes default Figure 3 and Figure 5 replay outputs into the repository results folders.
+  - `tools/run_release_examples.py` writes a deterministic checked release-output set into the same results folders.
 
 ## Notes
 

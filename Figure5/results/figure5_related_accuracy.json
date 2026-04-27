@@ -1,0 +1,70 @@
+{
+  "analysis": "related_accuracy",
+  "figure_panels": [
+    "Figure 5H"
+  ],
+  "looming_control": {
+    "mean_target_signal_auc": 3354909.1537285093,
+    "sem_target_signal_auc": 0.0,
+    "mean_target_baseline_auc": 22.949139579349914,
+    "sem_target_baseline_auc": 0.0,
+    "mean_other_signal_auc": 509963.28748280695,
+    "sem_other_signal_auc": 0.0,
+    "mean_other_baseline_auc": 34.39477303988995,
+    "sem_other_baseline_auc": 0.0,
+    "mean_accuracy": 0.8680517157448602,
+    "sem_accuracy": 0.0,
+    "mean_snr": 146188.88617276624,
+    "sem_snr": 0.0,
+    "mean_preference_index": 0.7361034314897204,
+    "sem_preference_index": 0.0
+  },
+  "looming_dl_activation": {
+    "mean_target_signal_auc": 34212492.60956021,
+    "sem_target_signal_auc": 0.0,
+    "mean_target_baseline_auc": 374102.90592734225,
+    "sem_target_baseline_auc": 0.0,
+    "mean_other_signal_auc": 229423.5653370007,
+    "sem_other_signal_auc": 0.0,
+    "mean_other_baseline_auc": 151.33700137551583,
+    "sem_other_baseline_auc": 0.0,
+    "mean_accuracy": 0.9933388269057976,
+    "sem_accuracy": 0.0,
+    "mean_snr": 91.45208996640328,
+    "sem_snr": 0.0,
+    "mean_preference_index": 0.986677653811595,
+    "sem_preference_index": 0.0
+  },
+  "smd_control": {
+    "mean_target_signal_auc": 2189110.291609364,
+    "sem_target_signal_auc": 0.0,
+    "mean_target_baseline_auc": 34.39477303988995,
+    "sem_target_baseline_auc": 0.0,
+    "mean_other_signal_auc": 227753.9246653918,
+    "sem_other_signal_auc": 0.0,
+    "mean_other_baseline_auc": 22.949139579349914,
+    "sem_other_baseline_auc": 0.0,
+    "mean_accuracy": 0.9057646999232578,
+    "sem_accuracy": 0.0,
+    "mean_snr": 63646.597960408246,
+    "sem_snr": 0.0,
+    "mean_preference_index": -0.8115293998465156,
+    "sem_preference_index": 0.0
+  },
+  "smd_sl_activation": {
+    "mean_target_signal_auc": 2716863.433287488,
+    "sem_target_signal_auc": 0.0,
+    "mean_target_baseline_auc": 3239.9876203576337,
+    "sem_target_baseline_auc": 0.0,
+    "mean_other_signal_auc": 189700.86195028684,
+    "sem_other_signal_auc": 0.0,
+    "mean_other_baseline_auc": 202.71739961759084,
+    "sem_other_baseline_auc": 0.0,
+    "mean_accuracy": 0.9347336433392855,
+    "sem_accuracy": 0.0,
+    "mean_snr": 838.5413006570677,
+    "sem_snr": 0.0,
+    "mean_preference_index": -0.8694672866785711,
+    "sem_preference_index": 0.0
+  }
+}

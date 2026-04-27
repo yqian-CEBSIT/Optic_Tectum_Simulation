@@ -18,6 +18,8 @@ FILES_TO_COPY = [
     "tools/generate_manuscript_assets.py",
     "tools/prepare_github_bundle.py",
     "tools/public_model_utils.py",
+    "tools/run_default_replays.py",
+    "tools/run_release_examples.py",
     "tools/validate_manuscript_assets.py",
     "Figure1/Figure1_TwoPathway.ipynb",
     "Figure1/local_connection_prob.csv",
@@ -42,6 +44,9 @@ FILES_TO_COPY = [
     "Figure2/accumulation/neuron_connections_whole.csv",
     "Figure3/F3_SNR_TIN_all.ipynb",
     "Figure3/figure3_s5_replay.py",
+    "Figure3/results/README.md",
+    "Figure3/results/figure3_looming_response_curve.csv",
+    "Figure3/results/figure3_smd_response_curve.csv",
     "Figure3/neuron_connections_whole.csv",
     "Figure3/neuron_number.csv",
     "Figure3/NLooming0.xlsx",
@@ -65,6 +70,9 @@ FILES_TO_COPY = [
     "Figure4/neuron_connections_whole.csv",
     "Figure4/serotonergic_connections.csv",
     "Figure5/figure5_model_replay.py",
+    "Figure5/results/README.md",
+    "Figure5/results/figure5_related_accuracy.json",
+    "Figure5/results/figure5_bias_curve.csv",
 ]
 
 DIRS_TO_COPY: list[str] = []
