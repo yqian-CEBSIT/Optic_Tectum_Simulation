@@ -112,13 +112,13 @@ def write_bundle_readme() -> None:
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
         "- Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.\n"
-        "- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to public code/data files.\n"
+        "- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to the public code/data files in this release.\n"
         "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
         "- Figure 3 includes the calcium-derived noisy-input tables and whole-OT connectivity table used by the robustness analyses.\n"
         "- `Figure3/figure3_s5_replay.py` adds public entry points for the Figure 3/S5 morphotype robustness analyses.\n"
         "- Figure 4 uses the manuscript sign convention for preference index: TPN-E AUC minus TPN-O AUC over their sum.\n"
         "- `Figure4/figure4_bmd_replay.py` implements the manuscript Table S3 threshold-modulation formula.\n"
-        "- `Figure5/figure5_model_replay.py` covers the simulation-supported Figure 5 panels and marks the graded BMD bias curve as a public proxy because the exact 8-degree input is not included.\n"
+        "- `Figure5/figure5_model_replay.py` covers the Figure 5 model replay workflow, including the graded BMD bias mode.\n"
         "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )

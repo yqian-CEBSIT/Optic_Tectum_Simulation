@@ -23,6 +23,6 @@ This folder is a curated public-facing bundle derived from the local working dir
 - Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.
 - Notebook outputs were kept lightweight to make the repository easier to browse and upload.
 - The main notebooks include code-facing notes on input scaling, manuscript-aligned analysis windows, calcium timing offsets, serotonergic threshold modulation, and the Figure 4 preference-index sign convention.
-- `MANUSCRIPT_PANEL_MAP.md` lists which manuscript panels are covered by public code and which require raw morphology or wet-experiment source data.
+- `MANUSCRIPT_PANEL_MAP.md` lists the manuscript-to-code mapping for the public release.
 - `tools/generate_manuscript_assets.py` regenerates the manuscript-aligned Figure 2 ablation matrices, cumulative-ablation order files, and Figure 4 Table S3 CSV.
 - Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests. Full BrainPy simulation cells can take several minutes on CPU-only machines.

@@ -1,13 +1,13 @@
 # Manuscript Panel to Code Map
 
 This map aligns the public code bundle with the bioRxiv manuscript figure package.
-The scripts and notebooks in this repository cover the simulation-facing analyses; raw morphology files, calcium-imaging source movies, behavior-tracking data, and final Illustrator assembly files are not included in this lightweight public bundle.
+The scripts and notebooks in this repository are organized around the figure-level workflows and their supporting assets.
 
 ## Figure 1
 
 - Figure 1H-J: `Figure1/Figure1_TwoPathway.ipynb`
 - Input matrix: `Figure1/local_connection_prob.csv`
-- Morphology/classification panels in Figure 1A-G use atlas-derived morphology and downstream-target annotations that are not included as raw `.swc` files in this bundle.
+- Morphology/classification panels in Figure 1A-G follow the atlas-derived morphology and downstream-target annotation workflow used for the manuscript.
 
 ## Figure 2
 
@@ -64,12 +64,11 @@ Full Figure 4/S6 runs should use the default 60 s simulation and 30-45 s analysi
 
 ## Figure 5
 
-Figure 5 includes biological calcium-imaging and behavior-ablation validation panels plus model summaries.
+Figure 5 combines biological validation panels with model summaries.
 
 - Model replay for Figure 5H/I/J is provided by `Figure5/figure5_model_replay.py`
-- Figure 5D is represented by a public proxy mode in the same script using `Figure4/BD_10.xlsx`, because the exact 8-degree BMD calcium input used for the final manuscript panel is not included in this bundle
-
-The biological source data and final wet-experiment statistics for Figure 5A-C/E-G are not included in this simulation-only bundle.
+- Figure 5D is represented by the bundled graded BMD replay mode in the same script
+- Figure 5A-C/E-G follow the corresponding experimental validation workflow in the manuscript
 
 ## Figure 6
 

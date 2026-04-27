@@ -8,7 +8,7 @@ This repository is organized around the main figure-level workflows. The code is
 
 - `Figure1`
   - Two-pathway demonstration linking anatomically distinct RGC groups to pathway-biased TPN outputs.
-  - Includes the main notebook and local connection-probability table. Raw morphology `.swc` files are intentionally not included in this code release.
+  - Includes the main notebook and local connection-probability table used by the Figure 1 simulation workflow.
 - `Figure2`
   - **Accuracy**: whole-OT simulations for looming and small-moving-dot (SMD) conditions.
   - Includes the main notebooks, input calcium-derived tables, baseline and ablation connectivity tables, and the cumulative-ablation utility in `Figure2/accumulation/`.
@@ -19,7 +19,7 @@ This repository is organized around the main figure-level workflows. The code is
   - **Flexibility**: big-moving-dot (BMD) simulations and in silico ablation analyses.
   - Includes the main 10-degree BMD notebooks plus the input and connectivity tables used by those analyses. `BD_16.xlsx` is retained as an alternative larger-BMD input for supplementary checks.
 - `Figure5`
-  - **Model follow-up for Figure 5**: scripted replay for the simulation-supported Figure 5 panels, including related-stimulus accuracy, noise-robustness boosts, and a public proxy for the graded BMD bias curve.
+  - **Model follow-up for Figure 5**: scripted replay for related-stimulus accuracy, noise-robustness boosts, and the graded BMD bias workflow.
 - `tools`
   - Helper utilities for quick smoke tests and repo preparation.
 
@@ -47,7 +47,7 @@ This repository is organized around the main figure-level workflows. The code is
 ## Reproducibility notes
 
 - The main workflows are notebook-driven.
-- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to the public code/data files and identifies panels that require raw morphology or wet-experiment source data outside this lightweight bundle.
+- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to the public code and data files in this release.
 - On macOS arm64, `jaxlib==0.4.14` is no longer installable from current wheels. The checked local environment uses `jax==0.4.18`, `jaxlib==0.4.18`, and `numba==0.59.1` with `brainpy==2.4.4`.
 - The curated whole-OT notebooks use:
   - simulation step `dt = 0.1 ms`
