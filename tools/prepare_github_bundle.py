@@ -45,8 +45,6 @@ FILES_TO_COPY = [
     "Figure3/F3_SNR_TIN_all.ipynb",
     "Figure3/figure3_s5_replay.py",
     "Figure3/results/README.md",
-    "Figure3/results/figure3_looming_response_curve.csv",
-    "Figure3/results/figure3_smd_response_curve.csv",
     "Figure3/neuron_connections_whole.csv",
     "Figure3/neuron_number.csv",
     "Figure3/NLooming0.xlsx",
@@ -71,8 +69,6 @@ FILES_TO_COPY = [
     "Figure4/serotonergic_connections.csv",
     "Figure5/figure5_model_replay.py",
     "Figure5/results/README.md",
-    "Figure5/results/figure5_related_accuracy.json",
-    "Figure5/results/figure5_bias_curve.csv",
 ]
 
 DIRS_TO_COPY: list[str] = []

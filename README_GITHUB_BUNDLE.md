@@ -27,4 +27,5 @@ This folder is a curated public-facing bundle derived from the local working dir
 - The main notebooks include code-facing notes on input scaling, manuscript-aligned analysis windows, calcium timing offsets, serotonergic threshold modulation, and the Figure 4 preference-index sign convention.
 - `MANUSCRIPT_PANEL_MAP.md` lists the manuscript-to-code mapping for the public release.
 - `tools/generate_manuscript_assets.py` regenerates the manuscript-aligned Figure 2 ablation matrices, cumulative-ablation order files, and Figure 4 Table S3 CSV.
+- Generated replay tables are written to `Figure3/results/` and `Figure5/results/` locally and are not versioned by default.
 - Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests. Full BrainPy simulation cells can take several minutes on CPU-only machines.

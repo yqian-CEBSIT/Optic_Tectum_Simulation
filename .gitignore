@@ -8,3 +8,7 @@ __pycache__/
 *.swc
 *_exec_*.ipynb
 *.log
+Figure3/results/*.csv
+Figure3/results/*.json
+Figure5/results/*.csv
+Figure5/results/*.json

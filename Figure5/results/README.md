@@ -1,8 +1,15 @@
 # Figure 5 Results
 
-This folder stores replay output tables generated from the public Figure 5 model workflows.
+This folder is the default local output target for replay tables generated from the public Figure 5 model workflows.
 
-- `figure5_related_accuracy.json`
-  - Related-stimulus accuracy summary for the Figure 5H model replay.
-- `figure5_bias_curve.csv`
-  - Graded BMD bias-curve summary for the Figure 5D model replay.
+Run:
+
+```bash
+python tools/run_release_examples.py
+```
+
+or:
+
+```bash
+python Figure5/figure5_model_replay.py --analysis related_accuracy --output Figure5/results/figure5_related_accuracy.json
+```
