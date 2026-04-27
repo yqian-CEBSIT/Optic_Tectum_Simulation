@@ -17,6 +17,8 @@ FILES_TO_COPY = [
     "tools/annotate_main_notebooks.py",
     "tools/generate_manuscript_assets.py",
     "tools/prepare_github_bundle.py",
+    "tools/public_model_utils.py",
+    "tools/validate_manuscript_assets.py",
     "Figure1/Figure1_TwoPathway.ipynb",
     "Figure1/local_connection_prob.csv",
     "Figure2/Figure2_Simulation_WholeOT_L.ipynb",
@@ -39,6 +41,7 @@ FILES_TO_COPY = [
     "Figure2/accumulation/neuron_number.csv",
     "Figure2/accumulation/neuron_connections_whole.csv",
     "Figure3/F3_SNR_TIN_all.ipynb",
+    "Figure3/figure3_s5_replay.py",
     "Figure3/neuron_connections_whole.csv",
     "Figure3/neuron_number.csv",
     "Figure3/NLooming0.xlsx",
@@ -61,6 +64,7 @@ FILES_TO_COPY = [
     "Figure4/neuron_number.csv",
     "Figure4/neuron_connections_whole.csv",
     "Figure4/serotonergic_connections.csv",
+    "Figure5/figure5_model_replay.py",
 ]
 
 DIRS_TO_COPY: list[str] = []
@@ -103,15 +107,18 @@ def write_bundle_readme() -> None:
         "- Figure 1 pathway-bias demo\n"
         "- Figure 2 accuracy workflows\n"
         "- Figure 3 robustness workflows\n"
-        "- Figure 4 flexibility workflows, defaulting to the 10-degree BMD input\n\n"
+        "- Figure 4 flexibility workflows, defaulting to the 10-degree BMD input\n"
+        "- Figure 5 scripted replay for the simulation-supported model panels\n\n"
         "## Notes\n\n"
         "- Notebook outputs were stripped to keep the bundle lighter and cleaner for GitHub.\n"
         "- Raw `.swc` morphology files and manuscript-unrelated benchmark code are intentionally excluded.\n"
         "- `MANUSCRIPT_PANEL_MAP.md` maps manuscript panels to public code/data files.\n"
         "- Figure 2 includes the baseline, ablated, critical, and non-critical connectivity matrices referenced by the curated notebooks.\n"
         "- Figure 3 includes the calcium-derived noisy-input tables and whole-OT connectivity table used by the robustness analyses.\n"
+        "- `Figure3/figure3_s5_replay.py` adds public entry points for the Figure 3/S5 morphotype robustness analyses.\n"
         "- Figure 4 uses the manuscript sign convention for preference index: TPN-E AUC minus TPN-O AUC over their sum.\n"
         "- `Figure4/figure4_bmd_replay.py` implements the manuscript Table S3 threshold-modulation formula.\n"
+        "- `Figure5/figure5_model_replay.py` covers the simulation-supported Figure 5 panels and marks the graded BMD bias curve as a public proxy because the exact 8-degree input is not included.\n"
         "- Use `tools/notebook_smoke_runner.py` for selected non-Jupyter smoke tests; full simulation cells can take several minutes.\n",
         encoding="utf-8",
     )

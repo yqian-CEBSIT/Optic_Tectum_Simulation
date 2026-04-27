@@ -18,6 +18,8 @@ This repository is organized around the main figure-level workflows. The code is
 - `Figure4`
   - **Flexibility**: big-moving-dot (BMD) simulations and in silico ablation analyses.
   - Includes the main 10-degree BMD notebooks plus the input and connectivity tables used by those analyses. `BD_16.xlsx` is retained as an alternative larger-BMD input for supplementary checks.
+- `Figure5`
+  - **Model follow-up for Figure 5**: scripted replay for the simulation-supported Figure 5 panels, including related-stimulus accuracy, noise-robustness boosts, and a public proxy for the graded BMD bias curve.
 - `tools`
   - Helper utilities for quick smoke tests and repo preparation.
 
@@ -37,6 +39,10 @@ This repository is organized around the main figure-level workflows. The code is
   - Main BMD pathway-bias simulation.
 - `Figure4/F4_BD_remove.ipynb`
   - BMD ablation variants.
+- `Figure3/figure3_s5_replay.py`
+  - Scripted replay for Figure 3/S5 robustness scans, family comparisons, ranking, and top-four ablations.
+- `Figure5/figure5_model_replay.py`
+  - Scripted replay for the simulation-supported Figure 5 panels.
 
 ## Reproducibility notes
 
@@ -105,6 +111,23 @@ For a fast installation check, shorten the simulation window:
 
 ```bash
 python Figure4/figure4_bmd_replay.py --subtype dl --sim-duration-ms 1000 --analysis-start-ms 0 --analysis-end-ms 1000
+```
+
+Figure 3 / S5 replay examples:
+
+```bash
+python Figure3/figure3_s5_replay.py --analysis family_compare --modality looming
+python Figure3/figure3_s5_replay.py --analysis single_scan --modality smd --noise-levels 0 0.01 0.05
+python Figure3/figure3_s5_replay.py --analysis rank_top4 --modality looming
+```
+
+Figure 5 model replay examples:
+
+```bash
+python Figure5/figure5_model_replay.py --analysis related_accuracy
+python Figure5/figure5_model_replay.py --analysis noise_boost --modality looming
+python Figure5/figure5_model_replay.py --analysis noise_boost --modality smd
+python Figure5/figure5_model_replay.py --analysis proxy_bias_curve
 ```
 
 ```powershell

@@ -26,9 +26,16 @@ The `noncri` matrices now mean "all remaining TIN morphotypes", matching the Fig
 ## Figure 3 and Figure S5
 
 - All-TIN noisy-input SNR replay: `Figure3/F3_SNR_TIN_all.ipynb`
+- Scripted public replay for Figure 3C-N and Figure S5 panel families: `Figure3/figure3_s5_replay.py`
 - Input workbooks: `Figure3/NLooming*.xlsx` and `Figure3/NSD*.xlsx`
 
-The current public notebook supports the all-TIN noisy-input SNR workflow. Morphotype-by-morphotype robustness ranking and top-contributor ablation panels require the original batch outputs or a longer rerun workflow; those are not fully represented by this lightweight notebook bundle.
+The public notebook supports the all-TIN noisy-input SNR workflow. `figure3_s5_replay.py` adds public entry points for:
+
+- Figure 3C/J style response curves
+- Figure 3D/K e-TIN-only and i-TIN-only comparisons relative to no-TIN controls
+- Figure S5 morphotype-by-morphotype fold-change scans at selected noise levels
+- Figure 3E/L robustness-score ranking and top-four e-TIN selection
+- Figure 3F/G/M/N style top-four versus non-specific e-TIN ablation summaries
 
 ## Figure 4 and Figure S6
 
@@ -57,7 +64,12 @@ Full Figure 4/S6 runs should use the default 60 s simulation and 30-45 s analysi
 
 ## Figure 5
 
-Figure 5 includes biological calcium-imaging and behavior-ablation validation panels plus model summaries. The BMD model component is linked to the Figure 4 replay workflow, but the biological source data and final statistics are not included in this simulation-only bundle.
+Figure 5 includes biological calcium-imaging and behavior-ablation validation panels plus model summaries.
+
+- Model replay for Figure 5H/I/J is provided by `Figure5/figure5_model_replay.py`
+- Figure 5D is represented by a public proxy mode in the same script using `Figure4/BD_10.xlsx`, because the exact 8-degree BMD calcium input used for the final manuscript panel is not included in this bundle
+
+The biological source data and final wet-experiment statistics for Figure 5A-C/E-G are not included in this simulation-only bundle.
 
 ## Figure 6
 

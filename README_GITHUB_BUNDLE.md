@@ -12,6 +12,8 @@ This folder is a curated public-facing bundle derived from the local working dir
   - **Robustness**: noisy-input analyses with calcium-derived noisy-input tables and whole-OT connectivity tables.
 - `Figure4`
   - **Flexibility**: 10-degree BMD simulations and ablation analyses; `BD_16.xlsx` is retained as an alternative larger-BMD input, and `figure4_bmd_replay.py` implements the manuscript Table S3 threshold-modulation formula.
+- `Figure5`
+  - **Model follow-up**: scripted replay for the simulation-supported Figure 5 panels.
 - `tools`
   - Helper scripts for smoke testing and bundle preparation.
 
